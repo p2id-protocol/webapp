@@ -1,0 +1,264 @@
+---
+const phrases = [
+  'without asking for a wallet address.',
+  'to an email address.',
+  'to an X or GitHub handle.',
+  'to a Discord or Telegram name.',
+  'into a vault only they can unlock.',
+  'and they claim with a zk proof.',
+  'non-custodially, on any EVM chain.',
+  'refundable if never claimed.',
+];
+
+const links = [
+  {
+    href: 'https://pvium.com/p2id',
+    label: 'Check your identity',
+    hint: 'You might have funds waiting to be claimed.',
+  },
+  {
+    href: 'https://github.com/pvium/p2id',
+    label: 'Build with P2ID',
+    hint: 'Source, SDK and contracts on GitHub.',
+  },
+  {
+    href: 'https://github.com/pvium/p2id/blob/main/P2ID.md',
+    label: 'Protocol reference',
+    hint: 'The P2ID specification and documentation.',
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>P2ID Protocol</title>
+    <meta
+      name="description"
+      content="Pay-to-identity: let your app, bot or AI agent pay in crypto to an email or social handle, without asking for a wallet address."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main>
+      <header class="top">
+        <span class="mark">&gt;_ p2id</span>
+        <span class="tag">pay-to-identity protocol</span>
+      </header>
+
+      <section class="hero">
+        <h1 aria-label={`Let your App, Bot or AI agent pay in crypto ${phrases[0]}`}>
+          <span aria-hidden="true">Let your App, Bot or AI agent pay in crypto</span>
+          <span class="typed-line" aria-hidden="true"
+            ><span class="prompt">&gt;</span> <span id="typed" class="accent"
+              >{phrases[0]}</span
+            ><span class="cursor">█</span></span
+          >
+        </h1>
+      </section>
+
+      <nav class="links" aria-label="Get started">
+        {
+          links.map((link) => (
+            <div class="link-row">
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+                <span class="arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+              <span class="hint">{link.hint}</span>
+            </div>
+          ))
+        }
+      </nav>
+
+      <footer>
+        <span>// open protocol by</span>
+        <a href="https://pvium.com" target="_blank" rel="noopener noreferrer"
+          >pvium</a
+        >
+      </footer>
+    </main>
+
+    <script define:vars={{ phrases }}>
+      const target = document.getElementById('typed');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (target && !reduced) {
+        let phrase = 0;
+        let pos = phrases[0].length;
+        let deleting = true;
+        const tick = () => {
+          const text = phrases[phrase];
+          if (deleting) {
+            pos -= 1;
+            target.textContent = text.slice(0, pos);
+            if (pos === 0) {
+              deleting = false;
+              phrase = (phrase + 1) % phrases.length;
+              return setTimeout(tick, 300);
+            }
+            return setTimeout(tick, 18);
+          }
+          const next = phrases[phrase];
+          pos += 1;
+          target.textContent = next.slice(0, pos);
+          if (pos === next.length) {
+            deleting = true;
+            return setTimeout(tick, 2000);
+          }
+          return setTimeout(tick, 35 + Math.random() * 45);
+        };
+        setTimeout(tick, 2200);
+      }
+    </script>
+
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        --bg: #0a0d0a;
+        --line: #1f2a1f;
+        --text: #d7e3d7;
+        --muted: #7f8f7f;
+        --green: #7cfc9a;
+        --amber: #ffb547;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo,
+          monospace;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        background-image: linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 32px 32px;
+        background-position: -1px -1px;
+      }
+      main {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 36px 16px 56px;
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 48px;
+      }
+      .mark {
+        font-weight: 800;
+        font-size: 18px;
+        color: var(--green);
+      }
+      .tag {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+      }
+
+      .hero h1 {
+        font-size: clamp(20px, 3.4vw, 30px);
+        line-height: 1.35;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        margin: 0 0 40px;
+      }
+      .typed-line {
+        display: block;
+        min-height: 1.35em;
+      }
+      .prompt {
+        color: var(--amber);
+      }
+      .accent {
+        color: var(--green);
+      }
+      .cursor {
+        color: var(--green);
+        font-weight: 400;
+        animation: blink 1s steps(1) infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .links {
+        display: grid;
+        gap: 22px;
+      }
+      .link-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .links a {
+        align-self: flex-start;
+        font-size: clamp(17px, 2.6vw, 21px);
+        font-weight: 700;
+        color: var(--green);
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 5px;
+      }
+      .links a:hover,
+      .links a:focus-visible {
+        text-decoration-thickness: 2px;
+        color: #a6ffbb;
+        outline: none;
+      }
+      .links a:focus-visible {
+        outline: 1px dashed var(--green);
+        outline-offset: 4px;
+      }
+      .arrow {
+        display: inline-block;
+        margin-left: 6px;
+        text-decoration: none;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      footer {
+        margin-top: 56px;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 8px;
+      }
+      footer a {
+        color: var(--green);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cursor {
+          animation: none;
+        }
+      }
+    </style>
+  </body>
+</html>
